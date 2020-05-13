@@ -7,6 +7,7 @@ bot.on('message', async (msg) => {
 		msg.delete();
 		if (msg.content.startsWith('-new')) {
 			const ticketReason = msg.content.slice(5);
+			ticketAuthor = msg.author;
 			const channelName = `ticket-${msg.author.id}`.toLowerCase();
 			try {
 				if (msg.guild.channels.cache.find((c) => c.name.toLowerCase() === channelName)) {
@@ -52,7 +53,9 @@ bot.on('message', async (msg) => {
 
 			for (const message of msgHistory.array().reverse())
 				await putInArray(`${handleTime(message.timestamp)} ${message.author.username} : ${message.content}`);
-			msg.author.send('Ticket closed: \n' + '```' + finalArray.join('\n') + '```');
+			(await bot.users.fetch(msg.channel.name.slice(7))).send(
+				'Ticket closed: \n' + '```' + finalArray.join('\n') + '```'
+			);
 			msg.channel.delete();
 		} else {
 			msg.channel.send('Sorry but only staff can close the ticket!');
