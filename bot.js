@@ -2,6 +2,10 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const moment = require('moment');
 
+bot.on('ready', async () => {
+	await bot.user.setActivity(`for new tickets.`, { type: 3 });
+});
+
 bot.on('message', async (msg) => {
 	if (msg.channel.id == '709831988265091122') {
 		msg.delete();
